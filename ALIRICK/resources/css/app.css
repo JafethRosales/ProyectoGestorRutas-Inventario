@@ -1,0 +1,24 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+.transform {
+    transition: transform 0.3s ease-in-out;
+}
+.-translate-x-full {
+    transform: translateX(-100%);
+}
+::-webkit-scrollbar
+{
+  width: 12px;  /* for vertical scrollbars */
+  height: 12px; /* for horizontal scrollbars */
+}
+
+::-webkit-scrollbar-track
+{
+  background: rgba(46, 51, 51, 0.473);
+}
+
+::-webkit-scrollbar-thumb
+{
+  background: rgba(83, 79, 79, 0.5);
+}
