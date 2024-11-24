@@ -18,8 +18,41 @@ use Illuminate\Support\Facades\Route;
 Route::redirect('/', 'dashboard');
 
 Route::view('dashboard', 'dashboard')
-    ->middleware(['auth', 'verified'])
-    ->name('dashboard');
+->middleware(['auth', 'verified'])
+->name('dashboard');
+
+Route::view('clientes', 'clientes')
+    ->middleware(['auth'])
+    ->name('clientes');
+
+Route::view('ventas', 'ventas')
+    ->middleware(['auth'])
+    ->name('ventas');
+
+Route::view('inventario', 'inventario')
+    ->middleware(['auth'])
+    ->name('inventario');
+
+Route::view('vehiculo', 'vehiculo')
+    ->middleware(['auth'])
+    ->name('vehiculo');
+
+Route::view('rutas', 'rutas')
+    ->middleware(['auth'])
+    ->name('rutas');
+
+Route::view('pagos', 'pagos')
+    ->middleware(['auth'])
+    ->name('pagos');
+
+Route::view('creditos', 'creditos')
+    ->middleware(['auth'])
+    ->name('creditos');
+
+Route::view('visitas', 'visitas')
+    ->middleware(['auth'])
+    ->name('visitas');
+
 
 Route::view('profile', 'profile')
     ->middleware(['auth'])

@@ -7,18 +7,41 @@
 .-translate-x-full {
     transform: translateX(-100%);
 }
+
 ::-webkit-scrollbar
 {
-  width: 12px;  /* for vertical scrollbars */
-  height: 12px; /* for horizontal scrollbars */
+  width: 8px;  /* for vertical scrollbars */
+  height: 8px; /* for horizontal scrollbars */
 }
+
 
 ::-webkit-scrollbar-track
 {
   background: rgba(46, 51, 51, 0.473);
+  display: none;
 }
+
+
 
 ::-webkit-scrollbar-thumb
 {
   background: rgba(83, 79, 79, 0.5);
+  border-radius: 10px;
 }
+
+input:-webkit-autofill {
+  background-color: #1F2937; /* Change to your preferred background color */
+  color: white !important; /* Change to your preferred text color */
+  -webkit-box-shadow: 0 0 0px 1000px #1F2937 inset !important; /* Ensure the background color is applied */
+  -webkit-text-fill-color: white !important;
+  transition: background-color 5000s ease-in-out 0s; /* Prevent color flashing */
+}
+
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus {
+  color: white !important;
+  -webkit-text-fill-color: white !important;
+  background-color: #1F2937 !important;
+  -webkit-box-shadow: 0 0 0px 1000px #1F2937 inset !important;
+}
+

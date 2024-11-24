@@ -11,6 +11,8 @@ class Ruta extends Model
 {
     use HasFactory, SoftDeletes;
 
+    public $timestamps = true;
+
     protected $fillable = [
         'hora_inicio',
         'hora_termino',
