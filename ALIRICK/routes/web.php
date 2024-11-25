@@ -53,11 +53,20 @@ Route::view('visitas', 'visitas')
     ->middleware(['auth'])
     ->name('visitas');
 
+Route::view('historial/rutas', 'rutas')
+    ->middleware(['auth'])
+    ->name('historial.rutas');
+
+Route::view('historial/pagos', 'pagos')
+    ->middleware(['auth'])
+    ->name('historial.pagos');
+
+Route::view('historial/creditos', 'creditos')
+    ->middleware(['auth'])
+    ->name('historial.creditos');
 
 Route::view('profile', 'profile')
     ->middleware(['auth'])
     ->name('profile');
-
-
 
 require __DIR__.'/auth.php';
