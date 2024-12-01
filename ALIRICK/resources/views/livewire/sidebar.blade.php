@@ -134,7 +134,7 @@ new class extends Component
               </li>
 
             <li>
-              <a class="flex items-center pl-3 py-3 pr-2 text-gray-50 hover:bg-gray-900 rounded" href="#">
+              <a class="flex items-center pl-3 py-3 pr-2 text-gray-50 hover:bg-gray-900 rounded" href="pagos">
                 <span class="inline-block mr-2">
                     <svg class="text-gray-600 w-6 h-5" viewbox="0 0 20 16" xmlns="http://www.w3.org/2000/svg" width="18" height="20" fill="currentColor" class="bi bi-cash-coin" > 
                         <path fill-rule="evenodd" d="M11 15a4 4 0 1 0 0-8 4 4 0 0 0 0 8zm5-4a5 5 0 1 1-10 0 5 5 0 0 1 10 0z"/> 
