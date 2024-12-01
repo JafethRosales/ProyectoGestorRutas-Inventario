@@ -33,9 +33,9 @@ Route::view('inventario', 'inventario')
     ->middleware(['auth'])
     ->name('inventario');
 
-Route::view('vehiculo', 'vehiculo')
+Route::view('vehiculos', 'vehiculos')
     ->middleware(['auth'])
-    ->name('vehiculo');
+    ->name('vehiculos');
 
 Route::view('rutas', 'rutas')
     ->middleware(['auth'])
