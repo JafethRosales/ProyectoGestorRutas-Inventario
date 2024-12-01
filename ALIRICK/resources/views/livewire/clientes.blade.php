@@ -1,13 +1,17 @@
-<div class="relative overflow-x-auto overflow-y-auto shadow-md sm:rounded-lg py-10 px-10 ">
-    <td class="px-6 py-4">
-        <button wire:click='confirmEditar(true)' type="button" class="align-middle  font-sans font-bold text-center uppercase transition-all text-xs py-3 px-6 hover:bg-blue-800 bg-indigo-950 text-white rounded-full">
-            Nuevo Registro</button>
-    </td>
-    <table class="min-w-full text-sm text-center rtl:text-right text-gray-500 dark:text-gray-400 ">
+<div class="relative overflow-x-auto overflow-y-auto shadow-md sm:rounded-lg pt-1 pb-10 px-10 ">
+    <div class="py-4">
+        <td class="px-6 py-4">
+            <button wire:click='confirmEditar(true)' type="button" class="align-middle  font-sans font-bold text-center uppercase transition-all text-xs py-3 px-6 hover:bg-blue-800 bg-indigo-950 text-white rounded-full">
+                Nuevo Registro</button>
+        </td>
+    </div> 
+    
+    <div >
+    <table class="table-auto w-full rounded-lg border-separate border-spacing-0 shadow-lg        min-w-full text-sm text-center rtl:text-right text-gray-500 dark:text-gray-400 ">
         <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-800 dark:text-gray-400 ">
             <tr>
-                @foreach ($atributosTabla as $atributo)
-                <th scope="col" class="px-6 py-3 ">
+                @foreach ($atributosTabla as $index => $atributo)
+                <th scope="col" class="border border-gray-800 @if($index == 0) rounded-tl-lg @elseif($index == 8) rounded-tr-lg @endif           px-6 py-3 ">
                     {{$atributo}}
                 </th>
                 @endforeach
@@ -46,7 +50,7 @@
                     </button>
                 </td>
 
-                <td class="p-4">
+                <td class="p-4 ">
                     <button wire:click="confirmDelete({{ $cliente->id }})"  class="align-middle text-xs rounded-full hover:bg-indigo-700 px-2 py-1 font-medium text-blue-600 dark:text-blue-500 hover:underline">
                         <svg class="w-7 h-7" style="color: rgb(165, 162, 147);" xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512"><title>ionicons-v5-k</title><path d="M432,144,403.33,419.74A32,32,0,0,1,371.55,448H140.46a32,32,0,0,1-31.78-28.26L80,144" style="fill:none;stroke:#241c27;stroke-linecap:round;stroke-linejoin:round;stroke-width:32px" fill="#a5a293"></path><rect x="32" y="64" width="448" height="80" rx="16" ry="16" style="fill:none;stroke:#241c27;stroke-linecap:round;stroke-linejoin:round;stroke-width:32px"></rect><line x1="312" y1="240" x2="200" y2="352" style="fill:none;stroke:#241c27;stroke-linecap:round;stroke-linejoin:round;stroke-width:32px"></line><line x1="312" y1="352" x2="200" y2="240" style="fill:none;stroke:#241c27;stroke-linecap:round;stroke-linejoin:round;stroke-width:32px"></line></svg>
                     </button>
@@ -55,6 +59,7 @@
             @endforeach
         </tbody>
     </table>
+    </div>
 
     
     @if ($limite)

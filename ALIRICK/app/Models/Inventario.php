@@ -17,10 +17,7 @@ class Inventario extends Model
         'existencias',
         'flete',
         'precio_compra',
-        'suma',
         'porcentaje_incremento',
-        'porcentaje_utilidad',
-        'precio_base',
     ];
     
     public function ordens() {

@@ -85,6 +85,7 @@ class Clientes extends Component
             }
         }
         $this->delete = null;
+        $this->deleteName = null;
     }
 
 
