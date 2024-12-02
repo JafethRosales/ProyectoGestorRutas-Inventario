@@ -13,6 +13,7 @@ class Pago extends Model
 
     protected $fillable = [
         'monto',
+        'cliente_id',
     ];
 
     public function cliente(): BelongsTo {

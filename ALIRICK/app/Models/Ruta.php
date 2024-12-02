@@ -16,10 +16,7 @@ class Ruta extends Model
     protected $fillable = [
         'hora_inicio',
         'hora_termino',
-        'venta_total',
-        'credito_recuperado',
-        'credito_generado',
-        'total_liquidar',
+        'user_id',
     ];
 
     public function user(): BelongsTo {

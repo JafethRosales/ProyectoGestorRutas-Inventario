@@ -13,7 +13,7 @@ class Credito extends Model
 
     protected $fillable = [
         'credito',
-        'debito',
+        'orden_id'
     ];
 
     public function orden(): BelongsTo {

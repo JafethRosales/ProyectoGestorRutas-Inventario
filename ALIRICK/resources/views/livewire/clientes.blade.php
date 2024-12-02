@@ -4,6 +4,17 @@
             <button wire:click='confirmEditar(true)' type="button" class="align-middle  font-sans font-bold text-center uppercase transition-all text-xs py-3 px-6 hover:bg-blue-800 bg-indigo-950 text-white rounded-full">
                 Nuevo Registro</button>
         </td>
+        @if($todos)
+        <td class="px-10 py-4">
+            <button wire:click='onlyCreditos' type="button" class="align-middle  font-sans font-bold text-center uppercase transition-all text-xs py-3 px-6 hover:bg-blue-800 bg-indigo-950 text-white rounded-full">
+                Créditos Activos</button>
+        </td>
+        @elseif (!$todos)
+        <td class="px-10 py-4">
+            <button wire:click='allCredit' type="button" class="align-middle  font-sans font-bold text-center uppercase transition-all text-xs py-3 px-6 hover:bg-blue-800 bg-indigo-950 text-white rounded-full">
+                Todos los Registros</button>
+        </td>
+        @endif
     </div> 
     
     <div >
@@ -37,7 +48,7 @@
                 </td>
                 </td>
                 <td class="px-6 py-4">
-                    {{$cliente->created_format}}
+                    {{$cliente->formatDate}}
                 </td>
                 <td class="px-6 py-4">
                     <button wire:click="confirmLimite({{$cliente->id}})"  class="align-middle  font-sans font-bold text-center uppercase transition-all text-xs py-3 px-6 hover:bg-indigo-950 text-gray-400  rounded-full">

@@ -4,6 +4,7 @@ namespace App\Livewire;
 
 use App\Models\Cliente;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 use Livewire\Component;
 
 
@@ -23,6 +24,7 @@ class Clientes extends Component
     
     
     public $clientes;
+    public $todos = true;
    
     public $delete = null;
     public $deleteName;
@@ -37,6 +39,22 @@ class Clientes extends Component
     
     public $limite;
     public $limite_credito;
+
+
+    
+    public function onlyCreditos(){
+        $pagos = Cliente::all()->where('credito', ">", 0.00);
+        foreach ($pagos as $pago) {
+            // Format the 'created_at' date to a more readable format
+            $pago->formatDate = Carbon::parse($pago->created_at)->toFormattedDateString();
+        }
+        $this->clientes = $pagos;
+        $this->todos = false;
+    }
+    public function allCredit(){
+        $this->todos = true;
+        $this->clientes = $this->getClientes();
+    }
 
     
     public function clear() {
@@ -53,7 +71,7 @@ class Clientes extends Component
 
         foreach ($listaClientes as $cliente) {
             // Format the 'created_at' date to a more readable format
-            $cliente->created_format = Carbon::parse($cliente->created_at)->toFormattedDateString();
+            $cliente->formatDate = Carbon::parse($cliente->created_at)->toFormattedDateString();
         }
 
         return $listaClientes;

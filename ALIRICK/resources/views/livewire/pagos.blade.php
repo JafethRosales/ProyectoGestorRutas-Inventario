@@ -11,6 +11,10 @@
                 Todos los Registros</button>
         </td>
         @endif
+        <td class="px-10 py-4">
+            <button wire:click='' type="button" class="align-middle  font-sans font-bold text-center uppercase transition-all text-xs py-3 px-6 hover:bg-blue-800 bg-indigo-950 text-white rounded-full">
+                Filtrar por Día</button>
+        </td>
     </div> 
     
     <div>

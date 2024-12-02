@@ -12,7 +12,7 @@ class Orden extends Model
     use HasFactory, SoftDeletes;
 
     protected $fillable = [
-        'monto_total',
+        'cliente_id',
         'descuento'
     ];
 

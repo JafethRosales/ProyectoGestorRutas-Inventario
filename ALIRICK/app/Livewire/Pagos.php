@@ -2,7 +2,6 @@
 
 namespace App\Livewire;
 
-use App\Models\Pago;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Livewire\Component;
