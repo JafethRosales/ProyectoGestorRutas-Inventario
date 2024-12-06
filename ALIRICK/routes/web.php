@@ -41,6 +41,12 @@ Route::view('rutas', 'rutas')
     ->middleware(['auth'])
     ->name('rutas');
 
+Route::get('/rutas/{id}', function($id){
+        return view('ruta-details', ['id'=>$id]);
+    })
+    ->middleware(['auth'])
+    ->name('rutas.show');
+
 Route::view('pagos', 'pagos')
     ->middleware(['auth'])
     ->name('pagos');

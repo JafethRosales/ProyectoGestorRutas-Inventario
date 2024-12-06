@@ -37,7 +37,7 @@
                     {{$venta->total}}
                 </td>
                 <td class="px-4 py-4">
-                    {{$venta->fecha}}
+                    {{$venta->formatDate}}
                 </td>
             </tr>
             @empty
