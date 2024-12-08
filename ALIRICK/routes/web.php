@@ -64,6 +64,10 @@ Route::view('profile', 'profile')
     ->middleware(['auth'])
     ->name('profile');
 
+Route::view('cargamentos', 'cargamentos')
+    ->middleware(['auth'])
+    ->name('cargamentos');
+
 
 
 require __DIR__.'/auth.php';

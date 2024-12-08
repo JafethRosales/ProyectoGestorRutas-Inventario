@@ -1,7 +1,7 @@
 <div class="relative overflow-x-auto overflow-y-auto shadow-md sm:rounded-lg pt-1 pb-10 px-10 ">
     <div class="py-4 px-4">
         <td class="px-10 py-4">
-            <button wire:click='' type="button" class="align-middle  font-sans font-bold text-center uppercase transition-all text-xs py-3 px-6 hover:bg-blue-800 bg-indigo-950 text-white rounded-full">
+            <button class="align-middle  font-sans font-bold text-center uppercase transition-all text-xs py-3 px-6 hover:bg-blue-800 bg-indigo-950 text-white rounded-full">
                 <a href="/rutas/">Regresar</a>
             </button>
         </td>

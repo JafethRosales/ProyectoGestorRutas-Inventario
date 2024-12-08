@@ -20,7 +20,7 @@ new class extends Component
     
     
     
-    <button x-on:click="mobileNavOpen = !mobileNavOpen" class="flex items-center rounded focus:outline-none absolute top-0 right-0 p-4">
+    <button x-on:click="mobileNavOpen = !mobileNavOpen" class="lg:pl-8 pl-4 flex items-center rounded focus:outline-none absolute top-0 left-0 p-4">
       <svg class="text-white bg-indigo-500 hover:bg-indigo-600 block h-8 w-8 p-2 rounded" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" fill="currentColor">
         <title>Mobile menu</title>
         <path d="M0 3h20v2H0V3zm0 6h20v2H0V9zm0 6h20v2H0v-2z"></path>

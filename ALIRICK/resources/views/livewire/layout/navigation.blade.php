@@ -19,18 +19,12 @@ new class extends Component
 <nav class="bg-white dark:bg-gray-800 border-b border-gray-100 dark:border-gray-700">
 
     <!-- Primary Navigation Menu -->
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:pl-4 lg:pr-0">
         <div class="flex justify-between h-16">
             
             <div class="flex">
 
                 
-                <!-- Logo -->
-                <div class="shrink-0 flex items-center">
-                    <a href="{{ route('dashboard') }}" wire:navigate>
-                        <x-application-logo class="block h-9 w-auto fill-current text-gray-800 dark:text-gray-200" />
-                    </a>
-                </div>
 
                 <!-- Navigation Links -->
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
@@ -41,6 +35,11 @@ new class extends Component
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
                     <x-nav-link :href="route('visitas')" :active="request()->routeIs('visitas')" wire:navigate>
                         {{ __('Visitas') }}
+                    </x-nav-link>
+                </div>
+                <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                    <x-nav-link :href="route('cargamentos')" :active="request()->routeIs('cargamentos')" wire:navigate>
+                        {{ __('Cargamentos') }}
                     </x-nav-link>
                 </div>
 
@@ -75,6 +74,13 @@ new class extends Component
                         </button>
                     </x-slot>
                 </x-dropdown>
+                 
+                <!-- Logo -->
+                 <div class="flex items-center ml-auto p-4">
+                    <a href="{{ route('dashboard') }}" wire:navigate>
+                        <x-application-logo class="block h-9 w-auto fill-current text-gray-800 dark:text-gray-200" />
+                    </a>
+                </div>
             </div>
 
             
