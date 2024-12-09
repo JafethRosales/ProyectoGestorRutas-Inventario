@@ -8,7 +8,7 @@
         <ul >
             @forelse($inventarios as $item)
                 <li>
-                    <button wire:click="addItem({{ $item->id }})" class="text-white pt-2">
+                    <button wire:click="addItem({{ $item->id }})" class="text-white pt-2 w-full">
                         {{ $item->nombre }} 
                         <p class="text-xs text-green-300">Stock: {{ $item->existencias }} pzas.</p>
                     </button>
@@ -64,7 +64,7 @@
             
             <div class="flex justify-end space-x-4">
                 <button class="py-2.5 px-5 ms-3 text-sm font-medium text-white  bg-white rounded-lg  hover:bg-gray-100 hover:text-blue-700 focus:z-10  dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-900">
-                   <a href="/dashboard/">Volver al inicio</a>
+                   <a href="/visitas/">Volver a Visitas</a>
                 </button>
                 <button wire:click="cerrarValidacion(false)" class="text-white bg-red-600 hover:bg-red-800   font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center">
                     Aceptar

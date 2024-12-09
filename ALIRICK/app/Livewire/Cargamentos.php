@@ -26,13 +26,12 @@ class Cargamentos extends Component
         $this->mostrarConfirmacion = $bool;
     }
 
-    // Dynamically update the search results as the user types
     public function updatedSearch()
     {   
         if ($this->search){
-            $this->inventarios = Inventario::where('nombre', 'LIKE', '%' . $this->search . '%')
+            $this->inventarios = Inventario::where('nombre', 'ilike', '%' . $this->search . '%')
                 ->where('existencias', '>', 0) // Only show items with stock
-                ->take(3) // Limit results
+                ->take(8) // Limit results
                 ->get();} else {$this->inventarios = [];}
     }
 
@@ -40,7 +39,7 @@ class Cargamentos extends Component
     public function addItem($itemId)
     {
         foreach ($this->items as $existingItem) {
-            if ($existingItem['id'] === $itemId) {
+            if ($existingItem['id'] == $itemId) {
                 return;
             }
         }
