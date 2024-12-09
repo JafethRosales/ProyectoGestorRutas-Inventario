@@ -3,6 +3,7 @@
 namespace App\Livewire;
 
 use App\Models\Cliente;
+use App\Models\Visita;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Livewire\Component;
@@ -18,9 +19,15 @@ class Clientes extends Component
         'Código',
         'Creado',
         'Créditos',
+        'Visitas',
         'Editar',
         'Eliminar',
     ];
+
+    public $visitas;
+    public $items = [];
+    public $selectedDays = []; // Array to store selected day IDs
+    public $search; 
     
     
     public $clientes;
@@ -166,6 +173,65 @@ class Clientes extends Component
     }
     
     
+    public function confirmVisits($id){
+        $this->visitas = $id;
+    }
+    public function cancelVisits() {
+        $this->visitas = null; // Reset the confirmation modal
+        $this->search = null;
+        $this->items = [];
+        $this->clientes = $this->getClientes();
+    }
+    public function updatedSearch() {
+        if ($this->search){
+            $this->selectedDays = DB::table('visitas')
+                ->where('dia', 'ilike', '%' . $this->search . '%')
+                ->take(2) // Limit results
+                ->get();} else {$this->selectedDays = [];}
+
+    }
+    public function addItem($itemId)
+    {
+        foreach ($this->items as $existingItem) {
+            if ($existingItem['id'] == $itemId) {
+                return;
+            }
+        }
+
+        $item = DB::table('visitas')->where('id', $itemId)->first();
+        if ($item) {
+            $this->items[] = [
+                'id' => $item->id,
+                'dia' => $item->dia,
+            ];
+        }
+        // Clear the search input and results
+        $this->search = '';
+        $this->selectedDays = [];
+    }
+    public function removeItem($index)
+    {
+        // Remove an item from the sale list
+        unset($this->items[$index]);
+        $this->items = array_values($this->items); // Reindex the array
+    }
+    public function saveVisits()
+    {
+        // Validate that at least one day is selected
+        $this->validate([
+            'items' => 'required|array|min:1',
+        ]);
+
+        // Insert records into the pivot table
+        foreach ($this->items as $dayId) {
+            DB::table('cliente_visita')->updateOrInsert(
+                ['cliente_id' => $this->visitas, 'visita_id' => $dayId['id']],
+            );
+        }
+        $this->reset(['visitas', 'items', 'selectedDays', 'search']);
+        session()->flash('success', 'Días de visita asignados!');
+        $this->clientes = $this->getClientes();
+    }
 
 
 
