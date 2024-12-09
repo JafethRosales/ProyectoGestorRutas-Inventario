@@ -31,7 +31,7 @@ class Cargamentos extends Component
         if ($this->search){
             $this->inventarios = Inventario::where('nombre', 'ilike', '%' . $this->search . '%')
                 ->where('existencias', '>', 0) // Only show items with stock
-                ->take(8) // Limit results
+                ->take(5) // Limit results
                 ->get();} else {$this->inventarios = [];}
     }
 

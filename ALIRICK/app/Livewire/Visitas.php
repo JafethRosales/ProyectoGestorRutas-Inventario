@@ -114,9 +114,8 @@ class Visitas extends Component
             $this->clientes = null;
             $this->ruta = null;}
     }
-   
-  
-    
+
+
    
     public function confirmPagos($id){
         $this->pagos = $id;
@@ -166,7 +165,16 @@ class Visitas extends Component
 
 
 
+
     public function confirmCredito($id){
+        if(!DB::table('ordens')
+            ->where('cliente_id', $id)
+            ->whereDate('created_at', Carbon::today())
+            ->exists()){
+                session()->flash('error', 'Este cliente no hizo compras en esta visita!');
+                $this->reset(['monto', 'creditos', 'rules']);
+                return;
+            }
         $this->creditos = $id;
     }
     public function cancelCredito() {
@@ -180,48 +188,55 @@ class Visitas extends Component
         ];
         $this->validate();
 
-        if(DB::table('ordens')->where('cliente_id', $this->creditos)->whereDate('created_at', Carbon::today())->exists()){
-            session()->flash('error', 'Ya se realizó un pago en esta visita!');
-            $this->reset(['monto', 'pagos', 'rules', 'clienteName']);
-            return;
-        } else {
-            session()->flash('error', 'No hay una orden reciente para este cliente!');
+        if(!$this->monto || $this->monto < 0.1){
+            session()->flash('error', 'Ingrese una cantidad válida!');
+            $this->reset(['monto', 'creditos', 'rules']);
             return;
         }
 
+        if(!DB::table('ordens')
+            ->where('cliente_id', $this->creditos)
+            ->whereDate('created_at', Carbon::today())
+            ->exists()){
+                session()->flash('error', 'Este cliente no hizo compras en esta visita!');
+                $this->reset(['monto', 'creditos', 'rules']);
+                return;
+            }
 
-        $credito = $this->clientes->firstWhere('cliente_id',$this->pagos)->credito;
-        if($credito == 0){
-            session()->flash('error', 'Este cliente no tiene adeudos!');
-            $this->reset(['monto', 'pagos', 'rules', 'clienteName']);
+        if(DB::table('creditos')
+            ->join('ordens', 'creditos.orden_id', '=', 'ordens.id')
+            ->select('creditos.*', 'ordens.id', 'ordens.cliente_id')
+            ->where('ordens.cliente_id', $this->creditos)
+            ->whereDate('creditos.created_at', Carbon::today())->exists()){
+            session()->flash('error', 'Ya se asignó un crédito en esta visita!');
+            $this->reset(['monto', 'creditos', 'rules']);
             return;
-        } else if ($this->monto > $credito) {
-            session()->flash('error', 'El pago no puede ser mayor al crédito del cliente!');
-            $this->reset(['monto', 'pagos', 'rules', 'clienteName']);
+        } 
+
+        $ordenId = DB::table('ordens')->where('cliente_id', $this->creditos)->whereDate('created_at', Carbon::today())->first()->id;
+        $orden = Orden::find($ordenId);
+        $cliente = Cliente::find($this->creditos);
+        $limite = $cliente->limite_credito;
+        $actual = $cliente->credito;
+
+        if ($this->monto + $actual > $limite){
+            session()->flash('error', 'Se alcanzó el límite de crédito de este cliente!');
+            $this->reset(['monto', 'creditos', 'rules']);
             return;
         }
-        // Create the Pago object
-        Pago::create([
-            'monto' => $this->monto,
-            'cliente_id' => $this->pagos,
-        ]);
+
         
-        DB::table('clientes')->decrement('credito', $this->monto);
+        // Create the Pago object
+        $orden->credito()->create([
+            'credito' => $this->monto,
+        ]);        
+        DB::table('clientes')->where('id', $this->creditos)->increment('credito', $this->monto);
 
         // Reset the form and display a success success
-        $this->reset(['monto', 'pagos', 'rules', 'clienteName']);
+        $this->reset(['monto', 'creditos', 'rules']);
+        session()->flash('success', 'Crédito Guardado!');
         $this->clientes = $this->getClientes();
-        session()->flash('success', 'Pago Realizado!');
     }
-
-
-
-
-
-    
-
-
-
 
 
 
@@ -258,19 +273,6 @@ class Visitas extends Component
         $this->clientes = $this->getClientes();
         session()->flash('success', 'Incidencia Registrada!');
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
     public function abrirVenta($id){
@@ -399,6 +401,8 @@ class Visitas extends Component
         session()->flash('success', 'Venta Realizada!');
         $this->clientes = $this->getClientes();
     }
+
+
 
 
 
