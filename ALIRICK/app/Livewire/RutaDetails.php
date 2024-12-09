@@ -45,7 +45,8 @@ class RutaDetails extends Component
     public function verLista($id, $fecha) {
         $this->lista = $id;
         $this->nombre = Cliente::find($this->lista)->name;
-        $prod = DB::table('historial_productos_ruta')->where('cliente_id', "=" , $id)->where('fecha', '=', $fecha)->get();
+        $date = Carbon::parse($fecha)->toDate();
+        $prod = DB::table('historial_productos_ruta')->where('cliente_id', "=" , $id)->whereDate('fecha', '=', $date)->get();
         $this->productos = $prod;
     }
     public function cerrar() {

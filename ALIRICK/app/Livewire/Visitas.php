@@ -30,6 +30,8 @@ class Visitas extends Component
     public $incidencia;
     public $descripcion;
     public $ventas;
+    public $descuento;
+    public $orden;
     public $atributosTabla = [
         'Nombre',
         'Domicilio',
@@ -75,6 +77,10 @@ class Visitas extends Component
     }
 
     public function abrirRuta(){
+        if(DB::table('rutas')->whereDate('created_at', Carbon::today())->exists() && !$this->ruta){
+            session()->flash('error', 'Vuelva Mañana!');
+            return;
+        }
         if($this->validandoInventario() && !$this->ruta){  
             $this->ruta = Ruta::create([
                 'user_id' => 1,
@@ -268,11 +274,13 @@ class Visitas extends Component
 
 
     public function abrirVenta($id){
+        if ($this->validandoVisita($id)){
+            $this->reset(['items', 'ventas', 'descuento', 'orden']);
+            session()->flash('error', 'Este cliente ya fue visitado!');
+            return;
+        }
+        //validacion 
         $this->ventas = $id;
-        // $cliente = Cliente::find($id);
-        // $cliente->ordens()->create([
-        //     'descuento' => 0
-        // ]);
     }
 
     public function updatedSearch() {
@@ -317,7 +325,8 @@ class Visitas extends Component
         if ($quantity > 0 && $quantity <= $this->items[$index]['existencias_vehiculo']) {
             $this->items[$index]['cantidad'] = $quantity;
         } else {
-            session()->flash('errorList', 'Invalid quantity for item: ' . $this->items[$index]['nombre']);
+            session()->flash('errorList', 'No hay suficientes existencias de: ' . $this->items[$index]['nombre']);
+            $this->removeItem($index);
         }
     }
 
@@ -328,33 +337,67 @@ class Visitas extends Component
         $this->items = array_values($this->items); // Reindex the array
     }
 
+    public function cancelarCompra(){
+        $this->items  = [];
+        $this->ventas = null;
+        $this->descuento = null;
+        $this->orden = null;
+    }
+
     public function save()
     {
+        if (!$this->validandoVisita($this->ventas)){
+            $cliente = Cliente::find($this->ventas);
+            $this->orden = $cliente->ordens()->create([
+                'descuento' => $this->descuento ?? 0,
+            ]);
+            DB::table('cliente_ruta')->insert([
+                'cliente_id' => $this->ventas,
+                'ruta_id' => $this->ruta->id,
+                'descripcion' => 'Venta exitosa'
+            ]);
+        } else {
+            $this->reset(['ventas', 'items', 'orden', 'descuento']);
+            session()->flash('error', 'Este cliente ya fue visitado!');
+            return;
+        }
+        //Crear cliente_ruta--->en save junto con orden
+
+
+        if (empty($this->items)){
+            session()->flash('errorList', 'Las ventas deben tener al menos un producto!');
+            return;
+        }
         // Validate stock before saving
         foreach ($this->items as $item) {
-            $inventario = inventario_vehiculo::find($item['id']);
+            $inventario = DB::table('inventario_vehiculo')->where('producto_id', $item['producto_id'])->first();
             if ($item['cantidad'] > $inventario->existencias_vehiculo) {
-                session()->flash('error', 'Not enough stock for: ' . $item['nombre']);
+                session()->flash('errorList', 'No hay suficientes unidades de: ' . $item['nombre']);
                 return;
             }
         }
 
         // Save the sale
         foreach ($this->items as $item) {
-            orden_producto::create([
-                'producto_id' => $item['id'],
+            DB::table('orden_producto')->insert([
+                'orden_id' => $this->orden->id,
+                'producto_id' => $item['producto_id'],
                 'cantidad' => $item['cantidad'],
+                'created_at' => now(),
+                'updated_at' => now()
             ]);
 
             // Update stock in inventario
-            $inventario = inventario_vehiculo::find($item['id']);
-            $inventario->existencias_vehiculo -= $item['cantidad'];
-            $inventario->save();
+            DB::table('inventario_vehiculo')->where('producto_id', $item['producto_id'])->decrement('existencias_vehiculo', $item['cantidad']);
         }
 
         // Clear the sale list and show a success success
         $this->items = [];
-        session()->flash('success', 'Sale completed successfully!');
+        $this->ventas = null;
+        $this->orden = null;
+        $this->descuento = null;
+        session()->flash('success', 'Venta Realizada!');
+        $this->clientes = $this->getClientes();
     }
 
 
